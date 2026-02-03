@@ -4,175 +4,202 @@
   <title>For Rikshit ♥️</title>
   <style>
     body {
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      font-family: Arial, sans-serif;
-      text-align: center;
-      height: 100vh;
-      overflow: hidden;
       margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      text-align: center;
+      overflow: hidden;
+    }
+    .screen { display: none; padding: 20px; }
+    .active { display: block; }
+
+    img.main-photo {
+      width: 90%;
+      max-width: 360px;
+      border-radius: 20px;
+      margin-top: 20px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
     }
 
-    h1 {
-      color: #b30059;
-      margin-top: 70px;
-      font-size: 38px;
-    }
-
-    p {
-      font-size: 22px;
-      color: #333;
-    }
-
-    .buttons {
-      margin-top: 40px;
-      position: relative;
-      height: 200px;
-    }
+    h1 { color: #b30059; }
+    p { font-size: 20px; }
 
     button {
-      padding: 15px 30px;
-      font-size: 18px;
+      display: block;
+      margin: 10px auto;
+      padding: 14px 26px;
+      font-size: 16px;
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
+      background: #e6005c;
+      color: white;
       cursor: pointer;
+      width: 85%;
+      max-width: 340px;
     }
 
-    #yes {
-      background-color: #e6005c;
-      color: white;
-      margin-right: 20px;
-      z-index: 2;
-    }
+    #no { position: absolute; background: #555; }
 
-    #no {
-      background-color: #555;
-      color: white;
-      position: absolute;
-      left: 50%;
-      top: 80px;
-    }
-
-    #message {
-      margin-top: 20px;
-      font-size: 18px;
-      color: #b30059;
-      min-height: 30px;
-    }
-
-    .heart {
+    .overlay {
       position: fixed;
-      top: -20px;
-      font-size: 24px;
-      animation: fall linear forwards;
-      pointer-events: none;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      z-index: 999;
+      color: white;
+      padding: 20px;
+    }
+    .overlay.show { display: flex; }
+
+    .reaction-gif {
+      width: 300px;
+      max-width: 85%;
+      border-radius: 18px;
+      margin-bottom: 15px;
     }
 
-    @keyframes fall {
-      to {
-        transform: translateY(110vh);
-        opacity: 0;
-      }
-    }
-
-    .confetti {
+    .firework {
       position: fixed;
-      width: 10px;
-      height: 10px;
-      top: 50%;
-      left: 50%;
-      animation: explode 1.5s ease-out forwards;
-      pointer-events: none;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      animation: explode 1.4s ease-out forwards;
     }
 
     @keyframes explode {
       to {
         transform: translate(
-          calc(-50% + (Math.random() * 600 - 300) * 1px),
-          calc(-50% + (Math.random() * 600 - 300) * 1px)
+          calc(-50% + (Math.random()*700 - 350)*1px),
+          calc(-50% + (Math.random()*700 - 350)*1px)
         );
         opacity: 0;
       }
+    }
+
+    .heart {
+      position: fixed;
+      top: -10px;
+      font-size: 26px;
+      animation: fall linear forwards;
+    }
+
+    @keyframes fall {
+      to { transform: translateY(110vh); opacity: 0; }
     }
   </style>
 </head>
 
 <body>
 
+<audio id="song">
+  <source src="bairiyaan.mp3" type="audio/mpeg">
+</audio>
+
+<div class="overlay" id="overlay">
+  <img id="overlayGif" class="reaction-gif">
+  <h2 id="overlayText"></h2>
+</div>
+
+<div class="screen active" id="s1">
+  <img src="photo1.jpg" class="main-photo">
+  <h1>Guess the moment that happened in that photo</h1>
+  <button onclick="wrong()">We were having pizza 🍕</button>
+  <button onclick="wrong()">Our first date out of car ♥️</button>
+  <button onclick="wrong()">Shaadi food cameraman story 😂</button>
+  <button onclick="right(2)">Both maybe 🥰</button>
+</div>
+
+<div class="screen" id="s2">
+  <img src="photo2.jpg" class="main-photo">
+  <h1>Guess the date?</h1>
+  <button onclick="wrong()">5 May 2025</button>
+  <button onclick="right(3)">6 May 2025</button>
+  <button onclick="wrong()">7 May 2025</button>
+  <button onclick="wrong()">idk man 🥲</button>
+</div>
+
+<div class="screen" id="s3">
+  <img src="photo3.jpg" class="main-photo">
+  <h1>Guess the place we were at?</h1>
+  <button onclick="wrong()">Atariya</button>
+  <button onclick="wrong()">Near Blendid Bliss</button>
+  <button onclick="right(4)">Near Radiant</button>
+  <button onclick="wrong()">Uhm not sure 🥹</button>
+</div>
+
+<div class="screen" id="s4">
   <h1>Rikshit ♥️</h1>
-  <p>Will you be my Valentine? 💕</p>
+  <p>Will you be my Valentine?</p>
+  <button onclick="yesClicked()">YES 💘</button>
+  <button id="no" onmouseover="moveNo()">NO 🙄</button>
+</div>
 
-  <div class="buttons">
-    <button id="yes" onclick="yesClicked()">YES 💘</button>
-    <button id="no" onmouseover="moveNo()">NO 🙄</button>
-  </div>
+<script>
+  let itachiToggle = true;
 
-  <div id="message"></div>
+  function showOverlay(gif, text) {
+    const o = document.getElementById("overlay");
+    document.getElementById("overlayGif").src = gif;
+    document.getElementById("overlayText").innerText = text;
+    o.classList.add("show");
+    setTimeout(() => o.classList.remove("show"), 2300);
+  }
 
-  <script>
-    const noMessages = [
-      "Catch me if you can 😜",
-      "Really? 🥹",
-      "Don't you like me a little?! 🥹",
-      "Oh come on!",
-      "Don't push it further 😌",
-      "Mmm no 🙂‍↔️, you have to say yes",
-      "Nope nope nope 😏",
-      "Try harder 😂"
-    ];
+  function right(next) {
+    showOverlay("shinchan.gif", "Awwww so smart you are 🥰");
+    fireworks();
+    setTimeout(() => {
+      document.querySelector(".active").classList.remove("active");
+      document.getElementById("s"+next).classList.add("active");
+    }, 2400);
+  }
 
-    const yesMessages = [
-      "Tooo easy 😌 are you not?! Huh 😉😙",
-      "I knew it 😏 you never stood a chance",
-      "That was quick 😳 someone was waiting to click YES",
-      "HAHA gotcha 💘 you’re officially mine now",
-      "See? Saying yes wasn’t that hard 😚",
-      "Okay okay, smooth choice 😌"
-    ];
+  function wrong() {
+    const gif = itachiToggle ? "itachi1.gif" : "itachi2.gif";
+    itachiToggle = !itachiToggle;
+    showOverlay(gif, "I'm gonna kill you 🔪");
+  }
 
-    function moveNo() {
-      const noBtn = document.getElementById("no");
-      const msg = document.getElementById("message");
+  function moveNo() {
+    const no = document.getElementById("no");
+    no.style.left = Math.random()*70 + "vw";
+    no.style.top = Math.random()*70 + "vh";
+  }
 
-      const randomX = Math.random() * 300;
-      const randomY = Math.random() * 120;
+  function yesClicked() {
+    document.getElementById("song").play();
+    hearts();
+    fireworks();
+    alert("Too easy 😌 were you even trying?");
+  }
 
-      noBtn.style.left = randomX + "px";
-      noBtn.style.top = randomY + "px";
-
-      msg.innerText = noMessages[Math.floor(Math.random() * noMessages.length)];
+  function fireworks() {
+    const c=["#ff4d6d","#ffd166","#06d6a0","#4d96ff","#c77dff"];
+    for(let i=0;i<50;i++){
+      const f=document.createElement("div");
+      f.className="firework";
+      f.style.background=c[Math.floor(Math.random()*c.length)];
+      f.style.top="50%"; f.style.left="50%";
+      document.body.appendChild(f);
+      setTimeout(()=>f.remove(),1400);
     }
+  }
 
-    function yesClicked() {
-      alert(yesMessages[Math.floor(Math.random() * yesMessages.length)]);
-      startHearts();
-      burstConfetti();
+  function hearts() {
+    for(let i=0;i<35;i++){
+      const h=document.createElement("div");
+      h.className="heart";
+      h.innerText="💖";
+      h.style.left=Math.random()*100+"vw";
+      h.style.animationDuration=(Math.random()*3+2)+"s";
+      document.body.appendChild(h);
+      setTimeout(()=>h.remove(),5000);
     }
-
-    function startHearts() {
-      for (let i = 0; i < 30; i++) {
-        const heart = document.createElement("div");
-        heart.className = "heart";
-        heart.innerText = "💖";
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.animationDuration = (Math.random() * 3 + 2) + "s";
-        document.body.appendChild(heart);
-
-        setTimeout(() => heart.remove(), 5000);
-      }
-    }
-
-    function burstConfetti() {
-      const colors = ["#ff4d6d", "#ffd166", "#06d6a0", "#4d96ff", "#c77dff"];
-      for (let i = 0; i < 40; i++) {
-        const confetti = document.createElement("div");
-        confetti.className = "confetti";
-        confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-        document.body.appendChild(confetti);
-
-        setTimeout(() => confetti.remove(), 1500);
-      }
-    }
-  </script>
+  }
+</script>
 
 </body>
 </html>
