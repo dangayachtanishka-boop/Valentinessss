@@ -10,8 +10,16 @@
       text-align: center;
       overflow: hidden;
     }
+
     .screen { display: none; padding: 20px; }
     .active { display: block; }
+
+    .intro {
+      font-size: 60px;
+      font-weight: bold;
+      color: #b30059;
+      margin-top: 40vh;
+    }
 
     img.main-photo {
       width: 90%;
@@ -38,12 +46,15 @@
       max-width: 340px;
     }
 
-    #no { position: absolute; background: #555; }
+    #no {
+      position: absolute;
+      background: #555;
+    }
 
     .overlay {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.65);
       display: none;
       align-items: center;
       justify-content: center;
@@ -52,11 +63,12 @@
       color: white;
       padding: 20px;
     }
+
     .overlay.show { display: flex; }
 
     .reaction-gif {
       width: 300px;
-      max-width: 85%;
+      max-width: 90%;
       border-radius: 18px;
       margin-bottom: 15px;
     }
@@ -103,42 +115,69 @@
   <h2 id="overlayText"></h2>
 </div>
 
-<div class="screen active" id="s1">
+<!-- INTRO -->
+<div class="screen active" id="intro">
+  <div class="intro">Heyyyyy! 😏</div>
+</div>
+
+<!-- SCREEN 1 -->
+<div class="screen" id="s1">
   <img src="photo1.jpg" class="main-photo">
   <h1>Guess the moment that happened in that photo</h1>
+
   <button onclick="wrong()">We were having pizza 🍕</button>
   <button onclick="wrong()">Our first date out of car ♥️</button>
   <button onclick="wrong()">Shaadi food cameraman story 😂</button>
   <button onclick="right(2)">Both maybe 🥰</button>
 </div>
 
+<!-- SCREEN 2 -->
 <div class="screen" id="s2">
   <img src="photo2.jpg" class="main-photo">
   <h1>Guess the date?</h1>
+
   <button onclick="wrong()">5 May 2025</button>
   <button onclick="right(3)">6 May 2025</button>
   <button onclick="wrong()">7 May 2025</button>
   <button onclick="wrong()">idk man 🥲</button>
 </div>
 
+<!-- SCREEN 3 -->
 <div class="screen" id="s3">
   <img src="photo3.jpg" class="main-photo">
   <h1>Guess the place we were at?</h1>
+
   <button onclick="wrong()">Atariya</button>
   <button onclick="wrong()">Near Blendid Bliss</button>
   <button onclick="right(4)">Near Radiant</button>
   <button onclick="wrong()">Uhm not sure 🥹</button>
 </div>
 
+<!-- VALENTINE -->
 <div class="screen" id="s4">
   <h1>Rikshit ♥️</h1>
   <p>Will you be my Valentine?</p>
+
   <button onclick="yesClicked()">YES 💘</button>
   <button id="no" onmouseover="moveNo()">NO 🙄</button>
 </div>
 
 <script>
   let itachiToggle = true;
+
+  const noTexts = [
+    "catch me if you can 😝",
+    "really? 🥹",
+    "don’t you like me a little?! 🥹",
+    "oh come on!",
+    "don’t push it further 😌",
+    "mmm no 🙂‍↔️, you have to say yes"
+  ];
+
+  setTimeout(() => {
+    document.getElementById("intro").classList.remove("active");
+    document.getElementById("s1").classList.add("active");
+  }, 2000);
 
   function showOverlay(gif, text) {
     const o = document.getElementById("overlay");
@@ -165,6 +204,8 @@
 
   function moveNo() {
     const no = document.getElementById("no");
+    const msg = noTexts[Math.floor(Math.random()*noTexts.length)];
+    showOverlay("", msg);
     no.style.left = Math.random()*70 + "vw";
     no.style.top = Math.random()*70 + "vh";
   }
